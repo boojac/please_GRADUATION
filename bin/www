@@ -2,6 +2,7 @@
 
 /**
  * Module dependencies.
+ * 这里面专门执行http服务
  */
 
 var app = require('../app');
