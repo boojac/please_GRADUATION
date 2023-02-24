@@ -23,18 +23,8 @@ router.post('/add', (req, res, next) => {
 
 
 /* 更新目录分类 */
-router.get('/update', function(req, res, next) {
-    res.json({
-
-    })
-});
-
-/* 删除目录分类 */
-
-router.post('/del', loginCheck, (req, res, next) => {
-    // const author = req.session.username
-
-    const result = delBlog(req.query.id)
+router.post('/update', (req, res, next) => {
+    const result = updateClass(req.query.id, req.body)
     return result.then(val => {
         if (val) {
             res.json(
@@ -42,7 +32,26 @@ router.post('/del', loginCheck, (req, res, next) => {
             )
         } else {
             res.json(
-                new ErrorModel('删除博客失败')
+                new ErrorModel('更新目录失败')
+            )
+        }
+    })
+})
+
+/* 删除目录分类 */
+
+router.post('/del', (req, res, next) => {
+    // const author = req.session.username
+
+    const result = delClass(req.query.id)
+    return result.then(val => {
+        if (val) {
+            res.json(
+                new SuccessModel()
+            )
+        } else {
+            res.json(
+                new ErrorModel('删除目录失败')
             )
         }
     })

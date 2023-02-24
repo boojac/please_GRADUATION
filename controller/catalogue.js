@@ -13,7 +13,7 @@ const addClass = (cataData = {}) => {
 
     const createTime = Date.now()
     const sql = `
-        insert into blogs (name, type, parent_id, order_num, createtime)
+        insert into mall_category (name, type, parent_id, order_num, createtime)
         values ('${name}', '${type}','${parent_id}','${order_num}'${createTime});
     `
 
@@ -26,24 +26,34 @@ const addClass = (cataData = {}) => {
 }
 
 // 修改目录分类
-const updateClass = (author, keyword) => {
-    let sql = `select * from blogs where 1=1 `
-    if (author) {
-        sql += `and author='${author}' `
-    }
-    if (keyword) {
-        sql += `and title like '%${keyword}%' `
-    }
-    sql += `order by createtime desc;`
+const updateClass = (upCataData = {}) => {
+    // upCata 是一个对象，包含id name type parent-id order-num 属性
+    
+    const id = upCataData.id
+    const name = xss(upCataData.name)
+    const type = upCataData.type
+    const parent_id = upCataData.parent_id
+    const order_num = upCataData.order_num
 
-    // 返回 promise
-    return exec(sql)
+    const updateTime = Date.now()
+    const sql = `
+        update mall_category set name='${name}', set type='${type}', set parent_id='${parent_id}', order_num='${order_num}' set update='${updateTime}' 
+        where id=${id}
+    `
+
+    return exec(sql).then(updateData => {
+        // console.log('updateData is ', updateData)
+        if (updateData.affectedRows > 0) {
+            return true
+        }
+        return false
+    })
 }
 
 // 删除目录分类
 const delClass = (id) => {
     // id 就是要删除目录的 id
-    const sql = `delete from blogs where id='${id}';`
+    const sql = `delete from mall_category where id='${id}';`
     return exec(sql).then(delData => {
         // console.log('delData is ', delData)
         if (delData.affectedRows > 0) {
